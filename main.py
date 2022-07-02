@@ -1,5 +1,3 @@
-pycryptodome==3.14.1
-google-cloud-pubsub==2.9.0
 import sys
 import base64
 from Crypto.Cipher import AES
