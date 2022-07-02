@@ -1,0 +1,614 @@
+steps:
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-lifestyle
+  args:
+  - functions
+  - deploy
+  - decryption-function-lifestyle
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-lifestyle
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-lifestyle-job
+  waitFor: ['deploy-decryption-function-lifestyle']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'lifestyle' AS table_name, ['nik'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.lifestyle where original_timestamp > '2022-04-20''
+  - --job-name=lifestyle-decryption-job
+  - --pubsub-topic=trigger-topic-lifestyle
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-promotion
+  args:
+  - functions
+  - deploy
+  - decryption-function-promotion
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-promotion
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-promotion-job
+  waitFor: ['deploy-decryption-function-promotion']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'promotion' AS table_name, ['nik'] AS encrypted_cols, ['original_timestamp', 'import_date', 'tanggal'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.promotion where original_timestamp > '2022-04-20''
+  - --job-name=promotion-decryption-job
+  - --pubsub-topic=trigger-topic-promotion
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-profile
+  args:
+  - functions
+  - deploy
+  - decryption-function-profile
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-profile
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-profile-job
+  waitFor: ['deploy-decryption-function-profile']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'profile' AS table_name, ['nik', 'nama_lengkap'] AS encrypted_cols, ['original_timestamp', 'import_date', 'tanggal_lahir'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.profile where original_timestamp > '2022-04-20''
+  - --job-name=profile-decryption-job
+  - --pubsub-topic=trigger-topic-profile
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-status
+  args:
+  - functions
+  - deploy
+  - decryption-function-status
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-status
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-status-job
+  waitFor: ['deploy-decryption-function-status']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'status' AS table_name, ['nik'] AS encrypted_cols, ['original_timestamp', 'import_date', 'last_unblocked'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.status where original_timestamp > '2022-04-20''
+  - --job-name=status-decryption-job
+  - --pubsub-topic=trigger-topic-status
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-work
+  args:
+  - functions
+  - deploy
+  - decryption-function-work
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-work
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-work-job
+  waitFor: ['deploy-decryption-function-work']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'work' AS table_name, ['nik'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.work where original_timestamp > '2022-04-20''
+  - --job-name=work-decryption-job
+  - --pubsub-topic=trigger-topic-work
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-workAndBusiness
+  args:
+  - functions
+  - deploy
+  - decryption-function-workAndBusiness
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-workAndBusiness
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-workAndBusiness-job
+  waitFor: ['deploy-decryption-function-workAndBusiness']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'workAndBusiness' AS table_name, ['nik'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.workAndBusiness where original_timestamp > '2022-04-20''
+  - --job-name=workAndBusiness-decryption-job
+  - --pubsub-topic=trigger-topic-workAndBusiness
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-produkAktif
+  args:
+  - functions
+  - deploy
+  - decryption-function-produkAktif
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-produkAktif
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-produkAktif-job
+  waitFor: ['deploy-decryption-function-produkAktif']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'produkAktif' AS table_name, ['nik'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.produkAktif where original_timestamp > '2022-04-22''
+  - --job-name=produkAktif-decryption-job
+  - --pubsub-topic=trigger-topic-produkAktif
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-value
+  args:
+  - functions
+  - deploy
+  - decryption-function-value
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-value
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-value-job
+  waitFor: ['deploy-decryption-function-value']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'value' AS table_name, ['nik'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.value where original_timestamp > '2022-04-24''
+  - --job-name=value-decryption-job
+  - --pubsub-topic=trigger-topic-value
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-transaksiEmasSale
+  args:
+  - functions
+  - deploy
+  - decryption-function-transaksiEmasSale
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-transaksiEmasSale
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-transaksiEmasSale-job
+  waitFor: ['deploy-decryption-function-transaksiEmasSale']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'transaksiEmasSale' AS table_name, ['nik', 'phone_number'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.transaksiEmasSale where original_timestamp > '2022-05-24''
+  - --job-name=transaksiEmasSale-decryption-job
+  - --pubsub-topic=trigger-topic-transaksiEmasSale
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-transaksiNonAngsuranCicil
+  args:
+  - functions
+  - deploy
+  - decryption-function-transaksiNonAngsuranCicil
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-transaksiNonAngsuranCicil
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-transaksiNonAngsuranCicil-job
+  waitFor: ['deploy-decryption-function-transaksiNonAngsuranCicil']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'transaksiNonAngsuranCicil' AS table_name, ['nik'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.transaksiNonAngsuranCicil where original_timestamp > '2022-05-24''
+  - --job-name=transaksiNonAngsuranCicil-decryption-job
+  - --pubsub-topic=trigger-topic-transaksiNonAngsuranCicil
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-transaksiEmasTransfer
+  args:
+  - functions
+  - deploy
+  - decryption-function-transaksiEmasTransfer
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-transaksiEmasTransfer
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-transaksiEmasTransfer-job
+  waitFor: ['deploy-decryption-function-transaksiEmasTransfer']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'transaksiEmasTransfer' AS table_name, ['nik','phone_number'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.transaksiEmasTransfer where original_timestamp > '2022-05-24''
+  - --job-name=transaksiEmasTransfer-decryption-job
+  - --pubsub-topic=trigger-topic-transaksiEmasTransfer
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-transaksiAngsuranPelunasan
+  args:
+  - functions
+  - deploy
+  - decryption-function-transaksiAngsuranPelunasan
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-transaksiAngsuranPelunasan
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-transaksiAngsuranPelunasan-job
+  waitFor: ['deploy-decryption-function-transaksiAngsuranPelunasan']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'transaksiAngsuranPelunasan' AS table_name, ['nik'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.transaksiAngsuranPelunasan where original_timestamp > '2022-05-24''
+  - --job-name=transaksiAngsuranPelunasan-decryption-job
+  - --pubsub-topic=trigger-topic-transaksiAngsuranPelunasan
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-transaksiEmasOpen
+  args:
+  - functions
+  - deploy
+  - decryption-function-transaksiEmasOpen
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-transaksiEmasOpen
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-transaksiEmasOpen-job
+  waitFor: ['deploy-decryption-function-transaksiEmasOpen']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'transaksiEmasOpen' AS table_name, ['nik','phone_number'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.transaksiEmasOpen where original_timestamp > '2022-05-24''
+  - --job-name=transaksiEmasOpen-decryption-job
+  - --pubsub-topic=trigger-topic-transaksiEmasOpen
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-transaksiEmasPYMTAIN
+  args:
+  - functions
+  - deploy
+  - decryption-function-transaksiEmasPYMTAIN
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-transaksiEmasPYMTAIN
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-transaksiEmasPYMTAIN-job
+  waitFor: ['deploy-decryption-function-transaksiEmasPYMTAIN']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'transaksiEmasPYMTAIN' AS table_name, ['nik','phone_number'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.transaksiEmasPYMTAIN where original_timestamp > '2022-05-24''
+  - --job-name=transaksiEmasPYMTAIN-decryption-job
+  - --pubsub-topic=trigger-topic-transaksiEmasPYMTAIN
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-transaksiNonAngsuranPencairan
+  args:
+  - functions
+  - deploy
+  - decryption-function-transaksiNonAngsuranPencairan
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-transaksiNonAngsuranPencairan
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-transaksiNonAngsuranPencairan-job
+  waitFor: ['deploy-decryption-function-transaksiNonAngsuranPencairan']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'transaksiNonAngsuranPencairan' AS table_name, ['nik'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.transaksiNonAngsuranPencairan where original_timestamp > '2022-05-24''
+  - --job-name=transaksiNonAngsuranPencairan-decryption-job
+  - --pubsub-topic=trigger-topic-transaksiNonAngsuranPencairan
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-transaksiNonAngsuranTebus
+  args:
+  - functions
+  - deploy
+  - decryption-function-transaksiNonAngsuranTebus
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-transaksiNonAngsuranTebus
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-transaksiNonAngsuranTebus-job
+  waitFor: ['deploy-decryption-function-transaksiNonAngsuranTebus']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'transaksiNonAngsuranTebus' AS table_name, ['nik'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.transaksiNonAngsuranTebus where original_timestamp > '2022-05-24''
+  - --job-name=transaksiNonAngsuranTebus-decryption-job
+  - --pubsub-topic=trigger-topic-transaksiNonAngsuranTebus
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: deploy-decryption-function-transaksiAngsuranAngsuran
+  args:
+  - functions
+  - deploy
+  - decryption-function-transaksiAngsuranAngsuran
+  - --runtime=python38
+  - --entry-point=hello_pubsub 
+  - --source=gs://passion-decryption/source/source.zip
+  - --trigger-topic=trigger-topic-transaksiAngsuranAngsuran
+  - --allow-unauthenticated
+  - --region=asia-southeast2
+  - --timeout=300s
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: create-dataflow-transaksiAngsuranAngsuran-job
+  waitFor: ['deploy-decryption-function-transaksiAngsuranAngsuran']
+  args:
+  - dataflow
+  - sql
+  - query
+  - 'SELECT *, 'transaksiAngsuranAngsuran' AS table_name, ['nik'] AS encrypted_cols, ['original_timestamp', 'import_date'] AS date_cols FROM bigquery.table.`crm-production-335312`.aixp.transaksiAngsuranAngsuran where original_timestamp > '2022-06-13''
+  - --job-name=transaksiAngsuranAngsuran-decryption-job
+  - --pubsub-topic=trigger-topic-transaksiAngsuranAngsuran
+  - --region=asia-southeast2
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-lifestyle
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-lifestyle
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-promotion
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-promotion
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-profile
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-profile
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-status
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-status
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-work
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-work
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-workAndBusiness
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-workAndBusiness
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-produkAktif
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-produkAktif
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-value
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-value
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-transaksiEmasSale
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-transaksiEmasSale
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-transaksiNonAngsuranCicil
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-transaksiNonAngsuranCicil
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-transaksiEmasTransfer
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-transaksiEmasTransfer
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-transaksiAngsuranPelunasan
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-transaksiAngsuranPelunasan
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-transaksiEmasOpen
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-transaksiEmasOpen
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-transaksiEmasPYMTAIN
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-transaksiEmasPYMTAIN
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-transaksiNonAngsuranPencairan
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-transaksiNonAngsuranPencairan
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-transaksiNonAngsuranTebus
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-transaksiNonAngsuranTebus
+  - --region=asia-southeast2
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: delete-deployed-function-transaksiAngsuranAngsuran
+  waitFor: ['create-dataflow-transaksiAngsuranAngsuran-job']
+  args:
+  - functions
+  - delete
+  - deploy-decryption-function-transaksiAngsuranAngsuran
+  - --region=asia-southeast2
+
+
